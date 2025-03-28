@@ -1,0 +1,29 @@
+name: Run Tests
+
+on:
+  pull_request:
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]  # Runs tests on Node.js versions 18, 20, and 22
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test  # Make sure you have a test script in package.json
